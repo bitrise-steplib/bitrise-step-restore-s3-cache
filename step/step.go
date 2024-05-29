@@ -63,7 +63,7 @@ func (step RestoreCacheStep) Run() error {
 	}
 
 	return cache.NewRestorer(step.envRepo, step.logger, step.commandFactory, downloader).Restore(cache.RestoreCacheInput{
-		StepId:         "restore-cache",
+		StepId:         "restore-s3-cache",
 		Verbose:        input.Verbose,
 		Keys:           strings.Split(input.Key, "\n"),
 		NumFullRetries: input.NumFullRetries,
