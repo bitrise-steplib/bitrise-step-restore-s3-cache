@@ -50,7 +50,7 @@ func (s DownloadService) Download(ctx context.Context, params network.DownloadPa
 	}
 
 	if s.Bucket == "" {
-		return "", fmt.Errorf("Bucket name must not be empty")
+		return "", fmt.Errorf("bucket name must not be empty")
 	}
 
 	cfg, err := loadAWSCredentials(
@@ -74,14 +74,14 @@ func (s DownloadService) downloadWithS3Client(
 	params network.DownloadParams,
 	logger log.Logger,
 ) (string, error) {
-	firstValidKey, err := s.firstAvailableKey(ctx, cacheKeys, logger)
+	validKey, err := s.firstAvailableKey(ctx, cacheKeys, logger)
 	if err != nil {
 		if !errors.Is(errS3KeyNotFound, err) {
 			return "", fmt.Errorf("matching key: %w", err)
 		}
 
 		logger.Debugf("Could not match provided cache keys, falling back to find archive by prefix...")
-		firstValidKey, err = s.firstAvailableKeyWithPrefix(ctx, cacheKeys)
+		validKey, err = s.firstAvailableKeyWithPrefix(ctx, cacheKeys)
 		if err != nil {
 			if errors.Is(errS3KeyNotFound, err) {
 				return "", errCacheNotFound
@@ -91,7 +91,7 @@ func (s DownloadService) downloadWithS3Client(
 	}
 
 	err = retry.Times(uint(params.NumFullRetries)).Wait(5 * time.Second).TryWithAbort(func(attempt uint) (error, bool) {
-		if err := s.getObject(ctx, firstValidKey, params.DownloadPath); err != nil {
+		if err := s.getObject(ctx, validKey, params.DownloadPath); err != nil {
 			return fmt.Errorf("download object: %w", err), false
 		}
 
@@ -101,7 +101,7 @@ func (s DownloadService) downloadWithS3Client(
 		return "", fmt.Errorf("all retries failed: %w", err)
 	}
 
-	return firstValidKey, nil
+	return validKey, nil
 }
 
 func (s DownloadService) firstAvailableKey(
@@ -110,11 +110,11 @@ func (s DownloadService) firstAvailableKey(
 	logger log.Logger,
 ) (string, error) {
 	for _, key := range keys {
-		fileKey := strings.Join([]string{key, "tzst"}, ".")
+		keyWithExtension := strings.Join([]string{key, "tzst"}, ".")
 
 		_, err := s.Client.HeadObject(ctx, &s3.HeadObjectInput{
 			Bucket: aws.String(s.Bucket),
-			Key:    aws.String(fileKey),
+			Key:    aws.String(keyWithExtension),
 		})
 		if err != nil {
 			var apiError smithy.APIError
@@ -130,7 +130,7 @@ func (s DownloadService) firstAvailableKey(
 			return "", fmt.Errorf("generic aws error: %w", err)
 		}
 
-		return key, nil
+		return keyWithExtension, nil
 	}
 	return "", errS3KeyNotFound
 }
@@ -150,7 +150,9 @@ func (s DownloadService) firstAvailableKeyWithPrefix(ctx context.Context, keys [
 			return "", fmt.Errorf("find artifact for key prefix: %w", err)
 		}
 
-		if len(page.Contents) != 0 && page.Contents[0].Key != nil {
+		if page.Contents != nil &&
+			len(page.Contents) != 0 &&
+			page.Contents[0].Key != nil {
 			return *page.Contents[0].Key, nil
 		}
 	}
