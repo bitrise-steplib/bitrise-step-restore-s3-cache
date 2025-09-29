@@ -9,9 +9,9 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.16.20
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.54.2
 	github.com/aws/smithy-go v1.20.2
-	github.com/bitrise-io/go-steputils/v2 v2.0.0-alpha.32
+	github.com/bitrise-io/go-steputils/v2 v2.0.0-alpha.40
 	github.com/bitrise-io/go-utils v1.0.13
-	github.com/bitrise-io/go-utils/v2 v2.0.0-alpha.20
+	github.com/bitrise-io/go-utils/v2 v2.0.0-alpha.26
 )
 
 require (
@@ -28,9 +28,11 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sso v1.20.8 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.24.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.28.9 // indirect
+	github.com/bitrise-io/got v0.0.0-20240902113940-25f6469d1456 // indirect
 	github.com/bmatcuk/doublestar/v4 v4.6.1 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/gofrs/uuid v4.4.0+incompatible // indirect
+	github.com/gofrs/uuid/v5 v5.2.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-retryablehttp v0.7.7 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
