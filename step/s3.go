@@ -150,9 +150,7 @@ func (s DownloadService) firstAvailableKeyWithPrefix(ctx context.Context, keys [
 			return "", fmt.Errorf("find artifact for key prefix: %w", err)
 		}
 
-		if page.Contents != nil &&
-			len(page.Contents) != 0 &&
-			page.Contents[0].Key != nil {
+		if len(page.Contents) != 0 && page.Contents[0].Key != nil {
 			return *page.Contents[0].Key, nil
 		}
 	}
