@@ -28,7 +28,6 @@ const (
 )
 
 var (
-	errCacheNotFound = errors.New("no cache archive found for the provided keys")
 	errS3KeyNotFound = errors.New("key not found in s3 bucket")
 	errNoKeyProvided = errors.New("no keys provided")
 )
