@@ -46,7 +46,7 @@ Examples of `getenv`:
 
 #### Key matching and fallback keys
 
-The most straightforward use case is that a cache archive is downloaded and restored if the provided key matches a cache archive uploaded previously using the Save Cache Step. Stored cache archives are scoped to the Bitrise project. Builds can restore caches saved by any previous Workflow run on any Bitrise Stack.
+The most straightforward use case is that a cache archive is downloaded and restored if the provided key matches a cache archive uploaded previously using the Save S3 Cache Step. Stored cache archives are scoped to the Bitrise project. Builds can restore caches saved by any previous Workflow run on any Bitrise Stack.
 
 It's possible to define more than one key in the cache keys input. You can specify additional keys by listing one key per line. The list is in priority order, so the Step will first try to find a match for the first key you provided, and if there is no cache stored for the key, it will move on to find a match for the second key (and so on).
 
@@ -63,7 +63,7 @@ inputs:
 
 #### Related steps
 
-[Save cache](https://github.com/bitrise-steplib/bitrise-step-save-cache/)
+[Save S3 cache](https://github.com/bitrise-steplib/bitrise-step-save-s3-cache/)
 
 </details>
 
@@ -80,13 +80,13 @@ Check out [Workflow Recipes](https://github.com/bitrise-io/workflow-recipes#-key
 
 ```yaml
 steps:
-- restore-s3-cache@1:
+- restore-cache@1:
     inputs:
     - key: npm-cache-{{ checksum "package-lock.json" }}
 
 # Build steps
 
-- save-s3-cache@1:
+- save-cache@1:
     inputs:
     - key: npm-cache-{{ checksum "package-lock.json" }}
     - paths: node_modules
@@ -96,7 +96,7 @@ steps:
 
 ```yaml
 steps:
-- restore-s3-cache@1:
+- restore-cache@1:
     inputs:
     - key: |-
         npm-cache-{{ checksum "package-lock.json" }}
@@ -111,7 +111,7 @@ Cache is not guaranteed to work across different Bitrise Stacks (different OS or
 
 ```yaml
 steps:
-- restore-s3-cache@1:
+- restore-cache@1:
     inputs:
     - key: |-
         {{ .OS }}-{{ .Arch }}-npm-cache-{{ checksum "package-lock.json" }}
