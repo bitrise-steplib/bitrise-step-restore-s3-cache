@@ -84,7 +84,7 @@ func (s DownloadService) downloadWithS3Client(
 		validKey, err = s.firstAvailableKeyWithPrefix(ctx, cacheKeys)
 		if err != nil {
 			if errors.Is(errS3KeyNotFound, err) {
-				return "", errCacheNotFound
+				return "", network.ErrCacheNotFound
 			}
 			return "", fmt.Errorf("finding archive by prefix: %w", err)
 		}
