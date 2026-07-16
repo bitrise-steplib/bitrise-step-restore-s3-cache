@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 
 	"github.com/bitrise-io/go-utils/v2/log"
@@ -143,6 +143,9 @@ func (c apiClient) acknowledgeMultipartUpload(uploadID string, successful bool, 
 	}
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.accessToken))
 	req.Header.Set("Content-type", "application/json")
+	if buildSlug := os.Getenv("BITRISE_BUILD_SLUG"); buildSlug != "" {
+		req.Header.Set("X-Build-Slug", buildSlug)
+	}
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
@@ -208,7 +211,7 @@ func (c apiClient) restore(cacheKeys []string) (restoreResponse, error) {
 }
 
 func unwrapError(resp *http.Response) error {
-	errorResp, err := ioutil.ReadAll(resp.Body)
+	errorResp, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}
