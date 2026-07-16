@@ -126,7 +126,7 @@ github.com/aws/smithy-go/time
 github.com/aws/smithy-go/transport/http
 github.com/aws/smithy-go/transport/http/internal/io
 github.com/aws/smithy-go/waiter
-# github.com/bitrise-io/go-steputils/v2 v2.0.0-alpha.51
+# github.com/bitrise-io/go-steputils/v2 v2.0.0-alpha.52
 ## explicit; go 1.21
 github.com/bitrise-io/go-steputils/v2/cache
 github.com/bitrise-io/go-steputils/v2/cache/compression
@@ -158,7 +158,7 @@ github.com/bitrise-io/go-utils/v2/parseutil
 github.com/bitrise-io/go-utils/v2/pathutil
 github.com/bitrise-io/go-utils/v2/retry
 github.com/bitrise-io/go-utils/v2/retryhttp
-# github.com/bitrise-io/got v0.0.0-20240902113940-25f6469d1456
+# github.com/bitrise-io/got v0.0.0-20260223134234-6d4aa9f90a75
 ## explicit; go 1.18
 github.com/bitrise-io/got
 # github.com/bmatcuk/doublestar/v4 v4.6.1
